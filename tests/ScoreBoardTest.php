@@ -3,6 +3,7 @@
 namespace ScoreBoard\Tests;
 
 use PHPUnit\Framework\MockObject\Generator\MockClass;
+use PHPUnit\Framework\MockObject\MockObject;
 use ScoreBoard\Entity\Game;
 use ScoreBoard\Repository\RepositoryInterface;
 use ScoreBoard\ScoreBoard;
@@ -13,7 +14,7 @@ class ScoreBoardTest extends TestCase
 {
     private ScoreBoardInterface $board;
 
-    private RepositoryInterface|\PHPUnit\Framework\MockObject\MockObject $repository;
+    private RepositoryInterface|MockObject $repository;
 
 
     protected function setUp(): void
@@ -30,7 +31,7 @@ class ScoreBoardTest extends TestCase
 
     public function testGetGame_noExist()
     {
-        $this->repository->method("getGame")->willReturn(new Game("any", "any"));
+        $this->repository->method("getGame")->willReturn(null);
         $this->assertNull($this->board->getGame("any", "any"));
     }
 
@@ -51,7 +52,7 @@ class ScoreBoardTest extends TestCase
         $this->repository->expects($this->exactly(1))->method("deleteGame");
 
         $game = $this->board->getGame("any", "any");
-        $updatedGame = $this->board->finishGame($game, 2, 4);
+        $this->board->finishGame($game, 2, 4);
     }
 
     public function testStartGame()

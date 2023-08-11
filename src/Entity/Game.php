@@ -8,34 +8,30 @@ class Game
     private string $awayTeamName;
     private int $homeTeamScore;
     private int $awayTeamScore;
+    private int $id;
 
     /**
      * @param string $homeTeamName
      * @param string $awayTeamName
+     * @param int $homeTeamScore
+     * @param int $awayTeamScore
      */
     public function __construct(string $homeTeamName, string $awayTeamName, int $homeTeamScore = 0, int $awayTeamScore = 0)
     {
+        $this->homeTeamName = $homeTeamName;
+        $this->awayTeamName = $awayTeamName;
+        $this->homeTeamScore = $homeTeamScore;
+        $this->awayTeamScore = $awayTeamScore;
     }
-
 
     public function getHomeTeamName(): string
     {
         return $this->homeTeamName;
     }
 
-    public function setHomeTeamName(string $homeTeamName): void
-    {
-        $this->homeTeamName = $homeTeamName;
-    }
-
     public function getAwayTeamName(): string
     {
         return $this->awayTeamName;
-    }
-
-    public function setAwayTeamName(string $awayTeamName): void
-    {
-        $this->awayTeamName = $awayTeamName;
     }
 
     public function getHomeTeamScore(): int
@@ -62,4 +58,15 @@ class Game
     {
         return $this->awayTeamScore + $this->homeTeamScore;
     }
+
+    public function getId(): int
+    {
+        return $this -> id;
+    }
+
+    public function setId(int $id): void
+    {
+        $this -> id = $id;
+    }
+
 }

@@ -19,7 +19,7 @@ interface ScoreBoardInterface
 
     public function updateScore(Game $game, int $homeTeamScore, int $awayTeamScore): Game;
 
-    public function finishGame();
+    public function finishGame(Game $game):void;
 
     public function getSummary();
 }

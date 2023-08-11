@@ -2,18 +2,40 @@
 
 namespace ScoreBoard\Repository;
 
+use RuntimeException;
 use ScoreBoard\Entity\Game;
 
 class InMemoryRepository implements RepositoryInterface
 {
+    public const ALREADY_EXIST = "Game already started";
+    /**
+     * @var Game[]
+     */
+    private array $games;
+    private int $iterator = 0;
+
     public function createGame(Game $game): void
     {
-        // TODO: Implement createGame() method.
+        $key = $this->getKey($game);
+        if (isset($this->games[$key]))
+            throw new RuntimeException(self::ALREADY_EXIST);
+        $game->setId(++$this->iterator);
+        $this->games[$key] = $game;
+    }
+
+    private function getKey(Game $game): string
+    {
+        return $this->getKeyFromTeamNames($game->getHomeTeamName(), $game->getAwayTeamName());
+    }
+    private function getKeyFromTeamNames(string $homeTeamName, string $awayTeamName):string
+    {
+        return "$homeTeamName-$awayTeamName";
     }
 
     public function deleteGame(Game $game): void
     {
-        // TODO: Implement deleteGame() method.
+        unset($this->games[$this->getKey($game)]);
+
     }
 
     /**
@@ -21,16 +43,31 @@ class InMemoryRepository implements RepositoryInterface
      */
     public function getAllSortedByTotalScore(): array
     {
-        // TODO: Implement getAllSortedByTotalScore() method.
+        $sortedGames = array_merge($this->games,[]);
+        usort(
+            $sortedGames,
+            function($a, $b) {
+                switch ($a->getTotalScore() <=> $b->getTotalScore()){
+                    case -1:
+                        return 1;
+                    case 1:
+                        return -1;
+                    case 0:
+                        return $a -> getId() < $b -> getId();
+                }
+                return 0;
+            }
+            );
+        return $sortedGames;
     }
 
     public function saveGame(Game $game): void
     {
-        // TODO: Implement saveGame() method.
+        $this->games[$this->getKey($game)] = $game;
     }
 
-    public function getGame(string $homeTeamName, string $awayTeamName): Game
+    public function getGame(string $homeTeamName, string $awayTeamName): ?Game
     {
-        // TODO: Implement getGame() method.
+        return $this->games[$this->getKeyFromTeamNames($homeTeamName, $awayTeamName)]??null;
     }
 }

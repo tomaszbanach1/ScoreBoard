@@ -22,26 +22,32 @@ class ScoreBoard implements ScoreBoardInterface
 
     public function startGame(string $homeTeam, string $awayTeam): Game
     {
-        // TODO: Implement startGame() method.
+        $game = new Game($homeTeam, $awayTeam);
+        $this->repository->createGame($game);
+        return $game;
     }
 
     public function getGame(string $homeTeam, string $awayTeam): ?Game
     {
-        // TODO: Implement getGame() method.
+        return $this->repository->getGame($homeTeam, $awayTeam);
     }
 
     public function updateScore(Game $game, int $homeTeamScore, int $awayTeamScore): Game
     {
-        // TODO: Implement updateScore() method.
+        $game->setHomeTeamScore($homeTeamScore);
+        $game->setAwayTeamScore($awayTeamScore);
+        $this->repository->saveGame($game);
+
+        return $game;
     }
 
-    public function finishGame()
+    public function finishGame(Game $game):void
     {
-        // TODO: Implement finishGame() method.
+        $this->repository->deleteGame($game);
     }
 
-    public function getSummary()
+    public function getSummary():array
     {
-        // TODO: Implement getSummary() method.
+        return $this->repository->getAllSortedByTotalScore();
     }
 }

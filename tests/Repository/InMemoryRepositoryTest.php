@@ -2,7 +2,7 @@
 
 namespace ScoreBoard\Tests\Repository;
 
-use \RuntimeException;
+use RuntimeException;
 use ScoreBoard\Entity\Game;
 use ScoreBoard\Repository\InMemoryRepository;
 use PHPUnit\Framework\TestCase;
@@ -53,7 +53,10 @@ class InMemoryRepositoryTest extends TestCase
 
     public function testDeleteGame()
     {
-
+        $game = new Game("Mexico", "Canada");
+        $this->repository->createGame($game);
+        $this->repository->deleteGame($game);
+        $this->assertNull($this->repository->getGame("Mexico", "Canada"));
     }
 
 }
