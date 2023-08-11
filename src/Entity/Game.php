@@ -4,7 +4,6 @@ namespace ScoreBoard\Entity;
 class Game
 {
     private string $homeTeamName;
-
     private string $awayTeamName;
     private int $homeTeamScore;
     private int $awayTeamScore;
@@ -16,8 +15,12 @@ class Game
      * @param int $homeTeamScore
      * @param int $awayTeamScore
      */
-    public function __construct(string $homeTeamName, string $awayTeamName, int $homeTeamScore = 0, int $awayTeamScore = 0)
-    {
+    public function __construct(
+        string $homeTeamName,
+        string $awayTeamName,
+        int $homeTeamScore = 0,
+        int $awayTeamScore = 0
+    ) {
         $this->homeTeamName = $homeTeamName;
         $this->awayTeamName = $awayTeamName;
         $this->homeTeamScore = $homeTeamScore;
@@ -61,12 +64,11 @@ class Game
 
     public function getId(): int
     {
-        return $this -> id;
+        return $this->id;
     }
 
     public function setId(int $id): void
     {
-        $this -> id = $id;
+        $this->id = $id;
     }
-
 }

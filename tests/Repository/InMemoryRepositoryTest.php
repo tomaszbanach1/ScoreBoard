@@ -58,5 +58,4 @@ class InMemoryRepositoryTest extends TestCase
         $this->repository->deleteGame($game);
         $this->assertNull($this->repository->getGame("Mexico", "Canada"));
     }
-
 }

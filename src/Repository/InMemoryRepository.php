@@ -17,8 +17,7 @@ class InMemoryRepository implements RepositoryInterface
     public function createGame(Game $game): void
     {
         $key = $this->getKey($game);
-        if (isset($this->games[$key]))
-            throw new RuntimeException(self::ALREADY_EXIST);
+        if (isset($this->games[$key])) throw new RuntimeException(self::ALREADY_EXIST);
         $game->setId(++$this->iterator);
         $this->games[$key] = $game;
     }
@@ -27,7 +26,8 @@ class InMemoryRepository implements RepositoryInterface
     {
         return $this->getKeyFromTeamNames($game->getHomeTeamName(), $game->getAwayTeamName());
     }
-    private function getKeyFromTeamNames(string $homeTeamName, string $awayTeamName):string
+
+    private function getKeyFromTeamNames(string $homeTeamName, string $awayTeamName): string
     {
         return "$homeTeamName-$awayTeamName";
     }
@@ -35,7 +35,6 @@ class InMemoryRepository implements RepositoryInterface
     public function deleteGame(Game $game): void
     {
         unset($this->games[$this->getKey($game)]);
-
     }
 
     /**
@@ -43,21 +42,15 @@ class InMemoryRepository implements RepositoryInterface
      */
     public function getAllSortedByTotalScore(): array
     {
-        $sortedGames = array_merge($this->games,[]);
-        usort(
-            $sortedGames,
-            function($a, $b) {
-                switch ($a->getTotalScore() <=> $b->getTotalScore()){
-                    case -1:
-                        return 1;
-                    case 1:
-                        return -1;
-                    case 0:
-                        return $a -> getId() < $b -> getId();
-                }
-                return 0;
-            }
-            );
+        $sortedGames = array_merge($this->games, []);
+        usort($sortedGames, function ($a, $b) {
+            return match ($a->getTotalScore() <=> $b->getTotalScore()) {
+                -1 => 1,
+                1 => -1,
+                0 => $a->getId() < $b->getId(),
+                default => 0,
+            };
+        });
         return $sortedGames;
     }
 
@@ -68,6 +61,6 @@ class InMemoryRepository implements RepositoryInterface
 
     public function getGame(string $homeTeamName, string $awayTeamName): ?Game
     {
-        return $this->games[$this->getKeyFromTeamNames($homeTeamName, $awayTeamName)]??null;
+        return $this->games[$this->getKeyFromTeamNames($homeTeamName, $awayTeamName)] ?? null;
     }
 }

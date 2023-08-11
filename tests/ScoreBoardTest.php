@@ -2,7 +2,6 @@
 
 namespace ScoreBoard\Tests;
 
-use PHPUnit\Framework\MockObject\Generator\MockClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use ScoreBoard\Entity\Game;
 use ScoreBoard\Repository\RepositoryInterface;
@@ -15,7 +14,6 @@ class ScoreBoardTest extends TestCase
     private ScoreBoardInterface $board;
 
     private RepositoryInterface|MockObject $repository;
-
 
     protected function setUp(): void
     {
@@ -64,16 +62,13 @@ class ScoreBoardTest extends TestCase
 
     public function testGetSummary()
     {
-        $this->repository
-            ->expects($this->exactly(1))
+        $this->repository->expects($this->exactly(1))
             ->method("getAllSortedByTotalScore")
-            ->willReturn(
-                [
-                    new Game("team1", "team2"),
-                    new Game("team3", "team4"),
-                    new Game("team5", "team6")
-                ]
-            );
+            ->willReturn([
+                new Game("team1", "team2"),
+                new Game("team3", "team4"),
+                new Game("team5", "team6")
+            ]);
 
         $this->board->getSummary();
     }
